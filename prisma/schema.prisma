@@ -1,0 +1,650 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../db/custom.db"
+}
+
+// Enums
+enum Role {
+  CLIENT
+  TECHNICIAN
+  MANAGER
+  ADMIN
+  HR
+  FINANCE
+}
+
+enum WorkOrderStatus {
+  REQUESTED
+  SCHEDULED
+  IN_PROGRESS
+  PENDING
+  COMPLETED
+  INVOICED
+  CLOSED
+  CANCELLED
+}
+
+enum Priority {
+  NORMAL
+  URGENT
+  EMERGENCY
+}
+
+enum NotificationType {
+  SYSTEM_ALERT
+  NEW_ORDER
+  ORDER_UPDATE
+  MESSAGE
+  SLA_WARNING
+  CONTRACT_EXPIRY
+}
+
+enum ContractType {
+  ON_DEMAND
+  FRAMEWORK
+  PREVENTIVE
+  DEDICATED
+}
+
+enum ContractStatus {
+  DRAFT
+  ACTIVE
+  EXPIRED
+  TERMINATED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  BANK_TRANSFER
+  CASH
+  CREDIT
+}
+
+enum WarrantyStatus {
+  ACTIVE
+  EXPIRED
+  VOIDED
+  CLAIMED
+}
+
+enum ClaimStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  RESOLVED
+}
+
+// Core User Models
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          Role      @default(CLIENT)
+  phone         String?
+  avatar        String?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Profiles
+  clientProfile     ClientProfile?
+  technicianProfile TechnicianProfile?
+  managerProfile    ManagerProfile?
+
+  // Relations
+  createdOrders     WorkOrder[]     @relation("ClientOrders")
+  assignedOrders    WorkOrder[]     @relation("TechnicianOrders")
+  sentMessages      Message[]
+  notifications     Notification[]
+  timeEntries       TimeTracking[]
+  approvedQuotes    Quotation[]     @relation("QuoteApprover")
+  
+  // HR & Finance
+  processedInvoices Invoice[]       @relation("InvoiceProcessor")
+}
+
+model ClientProfile {
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  companyName  String
+  ruc          String?
+  businessType String?
+  address      String?
+  industry     String?
+  
+  // Relations
+  contracts    Contract[]
+  locations    CompanyLocation[]
+}
+
+model CompanyLocation {
+  id              String         @id @default(cuid())
+  clientProfileId String
+  clientProfile   ClientProfile  @relation(fields: [clientProfileId], references: [id])
+  name            String
+  address         String
+  coordinates     String?        // JSON {lat, lng}
+  contactName     String?
+  contactPhone    String?
+  
+  workOrders      WorkOrder[]
+}
+
+model TechnicianProfile {
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  employeeId   String?
+  hireDate     DateTime?
+  baseSalary   Float?
+  hourlyCost   Float?
+  isAvailable  Boolean @default(true)
+  currentLat   Float?
+  currentLng   Float?
+  
+  // Relations
+  specialties    TechnicianSpecialty[]
+  certifications TechnicianCertification[]
+  ratings        Rating[]
+}
+
+model TechnicianSpecialty {
+  id                  String            @id @default(cuid())
+  technicianProfileId String
+  technicianProfile   TechnicianProfile @relation(fields: [technicianProfileId], references: [id])
+  name                String            // Electronics, Mechanics, etc.
+  level               String            // Junior, Senior
+}
+
+model TechnicianCertification {
+  id                  String            @id @default(cuid())
+  technicianProfileId String
+  technicianProfile   TechnicianProfile @relation(fields: [technicianProfileId], references: [id])
+  name                String
+  issueDate           DateTime
+  expiryDate          DateTime?
+  documentUrl         String?
+}
+
+model ManagerProfile {
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  employeeId   String?
+  department   String?
+}
+
+// Service Catalog
+model ServiceCategory {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  parentId    String?
+  parent      ServiceCategory? @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    ServiceCategory[] @relation("CategoryHierarchy")
+  services    Service[]
+  
+  contractRates ContractRate[]
+}
+
+model Service {
+  id            String          @id @default(cuid())
+  name          String
+  description   String?
+  categoryId    String
+  category      ServiceCategory @relation(fields: [categoryId], references: [id])
+  basePrice     Float
+  estimatedHours Float?
+  warrantyDays  Int             @default(30)
+  
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+// Contracts Module
+model Contract {
+  id              String         @id @default(cuid())
+  clientProfileId String
+  clientProfile   ClientProfile  @relation(fields: [clientProfileId], references: [id])
+  
+  type            ContractType   @default(ON_DEMAND)
+  status          ContractStatus @default(DRAFT)
+  startDate       DateTime
+  endDate         DateTime?
+  autoRenewal     Boolean        @default(false)
+  
+  // Financial Terms
+  paymentTerms    Int            @default(30) // Days
+  emergencyLimit  Float?
+  autoApproveLimit Float?
+  discountPercent Float          @default(0)
+  
+  // Relations
+  rates           ContractRate[]
+  slas            ContractSLA[]
+  workOrders      WorkOrder[]
+  invoices        Invoice[]
+  
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model ContractRate {
+  id                String          @id @default(cuid())
+  contractId        String
+  contract          Contract        @relation(fields: [contractId], references: [id])
+  serviceCategoryId String
+  serviceCategory   ServiceCategory @relation(fields: [serviceCategoryId], references: [id])
+  
+  hourlyRate        Float
+  nightMultiplier   Float           @default(1.5)
+  weekendMultiplier Float           @default(1.3)
+  holidayMultiplier Float           @default(1.5)
+  emergencyMultiplier Float         @default(2.0)
+}
+
+model ContractSLA {
+  id                   String   @id @default(cuid())
+  contractId           String
+  contract             Contract @relation(fields: [contractId], references: [id])
+  priority             Priority
+  
+  firstResponseMinutes Int
+  onSiteMinutes        Int
+  resolutionMinutes    Int
+  penaltyPercent       Float    @default(0)
+}
+
+// Asset Management
+model Asset {
+  id              String         @id @default(cuid())
+  companyId       String?        
+  qrCode          String?        @unique
+  name            String
+  brand           String?
+  model           String?
+  serialNumber    String?
+  installationDate DateTime?
+  
+  locationId      String?
+  location        AssetLocation? @relation(fields: [locationId], references: [id])
+  
+  workOrders      WorkOrder[]
+  
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model AssetLocation {
+  id        String   @id @default(cuid())
+  name      String
+  parentId  String?
+  parent    AssetLocation? @relation("LocationHierarchy", fields: [parentId], references: [id])
+  children  AssetLocation[] @relation("LocationHierarchy")
+  
+  assets    Asset[]
+}
+
+// Work Orders
+model WorkOrder {
+  id              String          @id @default(cuid())
+  orderNumber     String          @unique
+  title           String
+  description     String
+  category        String
+  priority        Priority        @default(NORMAL)
+  status          WorkOrderStatus @default(REQUESTED)
+  subStatus       String?         // en_camino, en_sitio, esperando_repuesto
+  requiresQuote   Boolean         @default(false)
+  
+  // Location & Contact
+  locationId      String?
+  location        CompanyLocation? @relation(fields: [locationId], references: [id])
+  serviceAddress  String
+  contactPerson   String
+  contactPhone    String
+  
+  // Relations
+  clientId        String
+  client          User            @relation("ClientOrders", fields: [clientId], references: [id])
+  contractId      String?
+  contract        Contract?       @relation(fields: [contractId], references: [id])
+  
+  technicianId    String?
+  technician      User?           @relation("TechnicianOrders", fields: [technicianId], references: [id])
+  
+  assetId         String?
+  asset           Asset?          @relation(fields: [assetId], references: [id])
+  
+  // Timestamps & SLA
+  scheduledDate   DateTime?
+  assignedAt      DateTime?
+  startedAt       DateTime?
+  completedAt     DateTime?
+  
+  slaFirstResponse DateTime?
+  slaOnSite        DateTime?
+  slaResolution    DateTime?
+  
+  // Execution Data
+  checkInAt       DateTime?
+  checkInLocation String?         // JSON {lat, lng}
+  checkOutAt      DateTime?
+  checkOutLocation String?        // JSON {lat, lng}
+  
+  notes           String?
+  attachments     String?         // JSON string array
+  
+  // Financials
+  budget          Float?
+  totalCost       Float?
+  internalCost    Float?
+
+  // Relations
+  quotations      Quotation[]
+  messages        Message[]
+  logs            WorkOrderLog[]
+  materials       OrderMaterial[]
+  timeEntries     TimeTracking[]
+  invoices        InvoiceItem[]
+  warranties      Warranty[]
+  ratings         Rating[]
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model WorkOrderLog {
+  id             String          @id @default(cuid())
+  workOrderId    String
+  workOrder      WorkOrder       @relation(fields: [workOrderId], references: [id], onDelete: Cascade)
+  
+  previousStatus WorkOrderStatus?
+  newStatus      WorkOrderStatus
+  gpsLat         Float?
+  gpsLng         Float?
+  notes          String?
+  
+  createdAt      DateTime        @default(now())
+}
+
+// Quotations & Invoicing
+model Quotation {
+  id          String    @id @default(cuid())
+  quotationNumber String @unique
+  workOrderId String
+  workOrder   WorkOrder @relation(fields: [workOrderId], references: [id], onDelete: Cascade)
+  
+  status      String    @default("DRAFT") // DRAFT, SENT, APPROVED, REJECTED
+  
+  // Totals
+  laborSubtotal    Float
+  materialsSubtotal Float
+  otherCosts       Float
+  discountAmount   Float     @default(0)
+  taxAmount        Float
+  totalAmount      Float
+  
+  validUntil  DateTime?
+  notes       String?
+  
+  approvedById String?
+  approvedBy   User?     @relation("QuoteApprover", fields: [approvedById], references: [id])
+  
+  items       QuotationItem[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model QuotationItem {
+  id          String    @id @default(cuid())
+  quotationId String
+  quotation   Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  
+  description String
+  quantity    Float
+  unitPrice   Float
+  total       Float
+}
+
+model Invoice {
+  id              String        @id @default(cuid())
+  invoiceNumber   String        @unique
+  companyId       String?       // Link to ClientProfile if needed
+  contractId      String?
+  contract        Contract?     @relation(fields: [contractId], references: [id])
+  
+  status          InvoiceStatus @default(DRAFT)
+  issueDate       DateTime
+  dueDate         DateTime
+  
+  subtotal        Float
+  taxAmount       Float
+  discountAmount  Float         @default(0)
+  totalAmount     Float
+  
+  pdfUrl          String?
+  
+  processedById   String?
+  processedBy     User?         @relation("InvoiceProcessor", fields: [processedById], references: [id])
+  
+  items           InvoiceItem[]
+  payments        Payment[]
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model InvoiceItem {
+  id          String    @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  workOrderId String?
+  workOrder   WorkOrder? @relation(fields: [workOrderId], references: [id])
+  
+  description String
+  quantity    Float
+  unitPrice   Float
+  total       Float
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  invoiceId     String
+  invoice       Invoice       @relation(fields: [invoiceId], references: [id])
+  
+  amount        Float
+  method        PaymentMethod
+  reference     String?
+  paymentDate   DateTime
+  notes         String?
+  
+  createdAt     DateTime      @default(now())
+}
+
+// Warranties
+model Warranty {
+  id          String         @id @default(cuid())
+  workOrderId String
+  workOrder   WorkOrder      @relation(fields: [workOrderId], references: [id])
+  
+  status      WarrantyStatus @default(ACTIVE)
+  startDate   DateTime
+  endDate     DateTime
+  terms       String?
+  
+  claims      WarrantyClaim[]
+  
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model WarrantyClaim {
+  id              String      @id @default(cuid())
+  warrantyId      String
+  warranty        Warranty    @relation(fields: [warrantyId], references: [id])
+  
+  originalOrderId String      // Reference to original work order
+  newOrderId      String?     // Reference to new work order created for the claim
+  
+  claimDate       DateTime
+  description     String
+  resolution      String?
+  status          ClaimStatus @default(PENDING)
+  
+  resolvedAt      DateTime?
+}
+
+// Ratings
+model Rating {
+  id            String    @id @default(cuid())
+  workOrderId   String
+  workOrder     WorkOrder @relation(fields: [workOrderId], references: [id])
+  
+  technicianId  String
+  technician    TechnicianProfile @relation(fields: [technicianId], references: [id])
+  
+  overallScore  Int
+  punctuality   Int
+  quality       Int
+  professionalism Int
+  comment       String?
+  
+  createdAt     DateTime  @default(now())
+}
+
+// Communication
+model Message {
+  id          String    @id @default(cuid())
+  content     String
+  read        Boolean   @default(false)
+  type        String    @default("text") // text, image, location
+  mediaUrl    String?
+  
+  senderId    String
+  sender      User      @relation(fields: [senderId], references: [id])
+  
+  workOrderId String
+  workOrder   WorkOrder @relation(fields: [workOrderId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title     String
+  message   String
+  type      NotificationType @default(SYSTEM_ALERT)
+  read      Boolean          @default(false)
+  relatedId String?
+  
+  createdAt DateTime         @default(now())
+}
+
+// Inventory
+model Product {
+  id          String          @id @default(cuid())
+  sku         String          @unique
+  name        String
+  description String?
+  buyingPrice Float?
+  sellingPrice Float?
+  category    String?
+  
+  stocks      Stock[]
+  materials   OrderMaterial[]
+}
+
+model Warehouse {
+  id        String   @id @default(cuid())
+  name      String
+  type      String   // Central, Van, etc.
+  
+  stocks    Stock[]
+}
+
+model Stock {
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id])
+  
+  warehouseId String
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id])
+  
+  quantity    Int       @default(0)
+  
+  @@id([productId, warehouseId])
+}
+
+model OrderMaterial {
+  id          String    @id @default(cuid())
+  workOrderId String
+  workOrder   WorkOrder @relation(fields: [workOrderId], references: [id], onDelete: Cascade)
+  
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id])
+  
+  quantity    Int
+  unitCost    Float?    // Snapshot of cost at time of usage
+  unitPrice   Float?    // Snapshot of price at time of usage
+  
+  createdAt   DateTime  @default(now())
+}
+
+// Time Tracking
+model TimeTracking {
+  id          String    @id @default(cuid())
+  workOrderId String
+  workOrder   WorkOrder @relation(fields: [workOrderId], references: [id], onDelete: Cascade)
+  
+  technicianId String
+  technician   User      @relation(fields: [technicianId], references: [id])
+  
+  startTime   DateTime  @default(now())
+  endTime     DateTime?
+  description String?
+  hours       Float?    @default(0)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Contact Form Submissions
+model ContactSubmission {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String
+  message     String
+  status      String   @default("PENDING") // PENDING, CONTACTED, CONVERTED, CLOSED
+  notes       String?  // Internal notes
+  source      String   @default("LANDING_PAGE") // LANDING_PAGE, WHATSAPP, etc.
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
