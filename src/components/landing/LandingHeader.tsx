@@ -110,41 +110,62 @@ export function LandingHeader({ variant = 'dark' }: LandingHeaderProps) {
             {mobileMenuOpen ? <XIcon className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
-
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <>
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/50 z-40" onClick={() => setMobileMenuOpen(false)} />
-              <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'tween', duration: 0.3 }} className="fixed top-0 right-0 h-full w-80 bg-white z-50 shadow-2xl p-6">
-                <div className="flex justify-between items-center mb-8">
-                  <span className="text-xl font-bold">Menú</span>
-                  <button onClick={() => setMobileMenuOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg"><XIcon className="h-6 w-6" /></button>
-                </div>
-                <nav className="flex flex-col gap-2">
-                  <div className="py-2">
-                    <p className="text-xs uppercase text-slate-400 font-semibold mb-2">Servicios</p>
-                    <Link href="/servicios/electricidad" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-700 hover:text-blue-700">⚡ Electricidad Industrial</Link>
-                    <Link href="/servicios/mecanica" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-700 hover:text-blue-700">🔧 Mecánica Industrial</Link>
-                    <Link href="/servicios/electronica" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-700 hover:text-blue-700">🖥️ Electrónica Industrial</Link>
-                    <Link href="/servicios/mantenimiento-preventivo" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-700 hover:text-blue-700">🛡️ Mantenimiento Preventivo</Link>
-                    <Link href="/servicios/emergencias" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-700 hover:text-blue-700">🚨 Emergencias 24/7</Link>
-                  </div>
-                  <div className="border-t pt-2">
-                    <Link href="/#plataforma" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-lg font-medium text-slate-700 hover:text-blue-700">Plataforma</Link>
-                    <Link href="/#industrias" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-lg font-medium text-slate-700 hover:text-blue-700">Industrias</Link>
-                    <Link href="/#testimonios" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-lg font-medium text-slate-700 hover:text-blue-700">Testimonios</Link>
-                    <Link href="/#contacto" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-lg font-medium text-slate-700 hover:text-blue-700">Contacto</Link>
-                  </div>
-                  <div className="border-t pt-4 mt-4 space-y-3">
-                    <Link href="/auth/signin" onClick={() => setMobileMenuOpen(false)}><Button variant="outline" className="w-full">Iniciar Sesión</Button></Link>
-                    <Link href="/auth/signup" onClick={() => setMobileMenuOpen(false)}><Button className="w-full bg-blue-600 hover:bg-blue-700">Comenzar Ahora</Button></Link>
-                  </div>
-                </nav>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
       </header>
+
+      {/* Mobile Menu - Outside header for proper z-index stacking */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop - covers entire screen */}
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]" 
+              onClick={() => setMobileMenuOpen(false)} 
+            />
+            {/* Menu Panel */}
+            <motion.div 
+              initial={{ x: '100%' }} 
+              animate={{ x: 0 }} 
+              exit={{ x: '100%' }} 
+              transition={{ type: 'tween', duration: 0.3 }} 
+              className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white z-[101] shadow-2xl overflow-y-auto"
+            >
+              <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+                <span className="text-xl font-bold text-slate-900">Menú</span>
+                <button onClick={() => setMobileMenuOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg">
+                  <XIcon className="h-6 w-6 text-slate-700" />
+                </button>
+              </div>
+              <nav className="p-6 flex flex-col gap-2">
+                <div className="py-2">
+                  <p className="text-xs uppercase text-slate-400 font-semibold mb-2">Servicios</p>
+                  <Link href="/servicios/electricidad" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 text-slate-700 hover:text-blue-700 hover:pl-2 transition-all">⚡ Electricidad Industrial</Link>
+                  <Link href="/servicios/mecanica" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 text-slate-700 hover:text-blue-700 hover:pl-2 transition-all">🔧 Mecánica Industrial</Link>
+                  <Link href="/servicios/electronica" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 text-slate-700 hover:text-blue-700 hover:pl-2 transition-all">🖥️ Electrónica Industrial</Link>
+                  <Link href="/servicios/mantenimiento-preventivo" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 text-slate-700 hover:text-blue-700 hover:pl-2 transition-all">🛡️ Mantenimiento Preventivo</Link>
+                  <Link href="/servicios/emergencias" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 text-slate-700 hover:text-blue-700 hover:pl-2 transition-all">🚨 Emergencias 24/7</Link>
+                </div>
+                <div className="border-t pt-4">
+                  <Link href="/#plataforma" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-lg font-medium text-slate-700 hover:text-blue-700">Plataforma</Link>
+                  <Link href="/#industrias" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-lg font-medium text-slate-700 hover:text-blue-700">Industrias</Link>
+                  <Link href="/#testimonios" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-lg font-medium text-slate-700 hover:text-blue-700">Testimonios</Link>
+                  <Link href="/#contacto" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-lg font-medium text-slate-700 hover:text-blue-700">Contacto</Link>
+                </div>
+                <div className="border-t pt-6 mt-4 space-y-3">
+                  <Link href="/auth/signin" onClick={() => setMobileMenuOpen(false)} className="block">
+                    <Button variant="outline" className="w-full h-12 text-base">Iniciar Sesión</Button>
+                  </Link>
+                  <Link href="/auth/signup" onClick={() => setMobileMenuOpen(false)} className="block">
+                    <Button className="w-full h-12 text-base bg-blue-600 hover:bg-blue-700">Comenzar Ahora</Button>
+                  </Link>
+                </div>
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   )
 }
