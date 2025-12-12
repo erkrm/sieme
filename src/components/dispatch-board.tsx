@@ -102,7 +102,7 @@ function UnassignedColumn({ orders }: { orders: WorkOrder[] }) {
         <CardTitle className="text-sm font-medium">Órdenes Sin Asignar</CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[600px] pr-4">
+        <ScrollArea className="h-auto max-h-[400px] lg:h-[600px] pr-4">
           {orders.map(order => (
             <DraggableOrder key={order.id} order={order} />
           ))}
@@ -170,7 +170,7 @@ export function DispatchBoard({ initialOrders, technicians, onAssign, onUnassign
 
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[700px]">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-[400px] lg:h-[700px]">
         <div className="lg:col-span-1">
           <UnassignedColumn orders={unassignedOrders} />
         </div>

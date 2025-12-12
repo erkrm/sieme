@@ -720,12 +720,12 @@ export default function AdminDashboard() {
 
         {/* Main Content */}
         <Tabs defaultValue="dispatch" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="dispatch">Despacho</TabsTrigger>
-            <TabsTrigger value="map">Mapa</TabsTrigger>
-            <TabsTrigger value="users">Usuarios</TabsTrigger>
-            <TabsTrigger value="work-orders">Órdenes</TabsTrigger>
-            <TabsTrigger value="system">Sistema</TabsTrigger>
+          <TabsList className="w-full flex overflow-x-auto gap-1 h-auto p-1">
+            <TabsTrigger value="dispatch" className="flex-1 min-w-[80px] text-xs sm:text-sm">Despacho</TabsTrigger>
+            <TabsTrigger value="map" className="flex-1 min-w-[80px] text-xs sm:text-sm">Mapa</TabsTrigger>
+            <TabsTrigger value="users" className="flex-1 min-w-[80px] text-xs sm:text-sm">Usuarios</TabsTrigger>
+            <TabsTrigger value="work-orders" className="flex-1 min-w-[80px] text-xs sm:text-sm">Órdenes</TabsTrigger>
+            <TabsTrigger value="system" className="flex-1 min-w-[80px] text-xs sm:text-sm">Sistema</TabsTrigger>
           </TabsList>
 
           {/* Dispatch Tab */}
@@ -771,21 +771,21 @@ export default function AdminDashboard() {
           {/* Users Tab */}
           <TabsContent value="users" className="space-y-6">
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>Gestión de Usuarios</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="relative">
+              <CardHeader className="space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <CardTitle>Gestión de Usuarios</CardTitle>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                    <div className="relative flex-1 sm:flex-initial">
                       <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       <Input
                         placeholder="Buscar usuarios..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 w-64"
+                        className="pl-10 w-full sm:w-64"
                       />
                     </div>
                     <Select value={roleFilter} onValueChange={setRoleFilter}>
-                      <SelectTrigger className="w-40">
+                      <SelectTrigger className="w-full sm:w-40">
                         <SelectValue placeholder="Filtrar por rol" />
                       </SelectTrigger>
                       <SelectContent>
@@ -797,7 +797,7 @@ export default function AdminDashboard() {
                       </SelectContent>
                     </Select>
                   </div>
-                </CardTitle>
+                </div>
                 <CardDescription>
                   Administra todos los usuarios del sistema
                 </CardDescription>
