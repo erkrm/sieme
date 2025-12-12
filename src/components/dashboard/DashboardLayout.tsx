@@ -126,13 +126,8 @@ export function DashboardLayout({
 
       {/* Sidebar - Hidden on mobile by default, visible on desktop */}
       <aside 
-        className={`
-          fixed top-0 left-0 h-full bg-white border-r shadow-lg z-[70]
-          w-72 lg:w-64
-          transition-transform duration-300 ease-in-out
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-          lg:translate-x-0
-        `}
+        data-state={sidebarOpen ? 'open' : 'closed'}
+        className="fixed top-0 left-0 h-full bg-white border-r shadow-lg z-[70] w-72 lg:w-64 transition-transform duration-300 ease-in-out -translate-x-full data-[state=open]:translate-x-0 lg:!translate-x-0"
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between h-14 lg:h-16 px-4 border-b">
