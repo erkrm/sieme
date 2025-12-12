@@ -121,18 +121,24 @@
   }
 }
 
-/* Mobile Sidebar - Custom CSS for reliable behavior */
-.sidebar-mobile {
+/* Mobile Sidebar - Robust fixed behavior */
+#app-sidebar {
   transform: translateX(-100%);
+  visibility: hidden;
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 300ms;
 }
 
-.sidebar-mobile[data-state="open"] {
+#app-sidebar[data-state="open"] {
   transform: translateX(0);
+  visibility: visible;
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0s;
 }
 
 @media (min-width: 1024px) {
-  .sidebar-mobile {
+  #app-sidebar {
     transform: translateX(0) !important;
+    visibility: visible !important;
+    transition: none !important;
   }
 }
 

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sidebar Test</title>
+  <style>
+    /* Mimic Tailwind Reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    /* Global CSS logic from globals.css */
+    .sidebar-mobile {
+      transform: translateX(-100%);
+      transition: transform 300ms ease-in-out;
+      position: fixed;
+      top: 0; 
+      left: 0;
+      height: 100%;
+      width: 18rem; /* w-72 */
+      background: white;
+      border-right: 1px solid #eee;
+      z-index: 70;
+    }
+
+    .sidebar-mobile[data-state="open"] {
+      transform: translateX(0);
+    }
+
+    @media (min-width: 1024px) {
+      .sidebar-mobile {
+        transform: translateX(0) !important;
+      }
+    }
+  </style>
+</head>
+<body style="background: #f0f0f0; min-height: 100vh;">
+  <!-- Header -->
+  <header style="height: 3.5rem; background: white; border-bottom: 1px solid #ccc; position: fixed; top: 0; width: 100%; z-index: 50; display: flex; align-items: center; padding: 0 1rem;">
+    <button onclick="document.querySelector('aside').setAttribute('data-state', 'open')">Open</button>
+    <span style="margin-left: 1rem;">Header</span>
+  </header>
+
+  <!-- Sidebar -->
+  <aside 
+    data-state="closed"
+    class="sidebar-mobile"
+  >
+    <div style="padding: 1rem;">
+      <button onclick="document.querySelector('aside').setAttribute('data-state', 'closed')">Close</button>
+      <p>Sidebar Content</p>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main style="padding-top: 3.5rem;">
+    <div style="padding: 1rem;">
+      <h1>Main Content</h1>
+      <p>Should be visible.</p>
+    </div>
+  </main>
+</body>
+</html>

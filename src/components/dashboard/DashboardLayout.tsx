@@ -126,6 +126,7 @@ export function DashboardLayout({
 
       {/* Sidebar - Hidden on mobile by default, visible on desktop */}
       <aside 
+        id="app-sidebar"
         data-state={sidebarOpen ? 'open' : 'closed'}
         className="sidebar-mobile fixed top-0 left-0 h-full bg-white border-r shadow-lg z-[70] w-72 lg:w-64 transition-transform duration-300 ease-in-out"
       >
