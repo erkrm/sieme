@@ -124,11 +124,10 @@ export function DashboardLayout({
         )}
       </AnimatePresence>
 
-      {/* Sidebar - Hidden on mobile by default, visible on desktop */}
+      {/* Sidebar - Uses display:none on mobile, display:block on desktop */}
       <aside 
         id="app-sidebar"
-        data-state={sidebarOpen ? 'open' : 'closed'}
-        className="fixed top-0 left-0 h-full bg-white border-r shadow-lg z-[100] w-72 lg:w-64 transition-all duration-300 ease-in-out -translate-x-full invisible data-[state=open]:translate-x-0 data-[state=open]:visible lg:translate-x-0 lg:visible"
+        className={`fixed top-0 left-0 h-full bg-white border-r shadow-lg z-[100] w-72 lg:w-64 transition-transform duration-300 ease-in-out ${sidebarOpen ? 'block translate-x-0' : 'hidden -translate-x-full'} lg:block lg:translate-x-0`}
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between h-14 lg:h-16 px-4 border-b">
