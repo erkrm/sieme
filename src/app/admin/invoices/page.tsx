@@ -128,17 +128,15 @@ export default function InvoicesPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto p-4 md:p-6 space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Gestión de Facturas</h1>
-          <p className="text-slate-500">Administra las facturas generadas automáticamente.</p>
-        </div>
+      <div>
+        <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Gestión de Facturas</h1>
+        <p className="text-slate-500 text-sm md:text-base">Administra las facturas generadas automáticamente.</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-slate-500">Total Facturas</CardTitle>
@@ -186,11 +184,11 @@ export default function InvoicesPage() {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>Facturas</CardTitle>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+            <CardTitle className="text-lg">Facturas</CardTitle>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Filtrar por estado" />
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue placeholder="Filtrar estado" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todos</SelectItem>
@@ -203,14 +201,14 @@ export default function InvoicesPage() {
             </Select>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto">
           {invoices.length === 0 ? (
             <div className="text-center py-10 text-slate-500">
               <FileText className="h-12 w-12 mx-auto mb-4 opacity-20" />
               <p>No hay facturas registradas.</p>
             </div>
           ) : (
-            <Table>
+            <Table className="min-w-[900px]">
               <TableHeader>
                 <TableRow>
                   <TableHead>Número</TableHead>
