@@ -626,15 +626,15 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Access Navigation */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-6 md:mb-8">
           <Link href="/admin/technicians" className="block">
             <Card className="hover:shadow-lg transition-all cursor-pointer border-l-4 border-l-purple-500 hover:border-l-purple-600">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <Wrench className="h-8 w-8 text-purple-500" />
-                  <div>
-                    <p className="font-semibold">Técnicos</p>
-                    <p className="text-xs text-gray-500">Gestionar técnicos</p>
+              <CardContent className="p-2 md:p-4">
+                <div className="flex items-center gap-2 md:gap-3">
+                  <Wrench className="h-6 w-6 md:h-8 md:w-8 text-purple-500 shrink-0" />
+                  <div className="min-w-0">
+                    <p className="font-semibold text-sm md:text-base truncate">Técnicos</p>
+                    <p className="text-[10px] md:text-xs text-gray-500 truncate">Gestionar técnicos</p>
                   </div>
                 </div>
               </CardContent>
@@ -642,12 +642,12 @@ export default function AdminDashboard() {
           </Link>
           <Link href="/admin/managers" className="block">
             <Card className="hover:shadow-lg transition-all cursor-pointer border-l-4 border-l-blue-500 hover:border-l-blue-600">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <Users className="h-8 w-8 text-blue-500" />
-                  <div>
-                    <p className="font-semibold">Managers</p>
-                    <p className="text-xs text-gray-500">Gestionar managers</p>
+              <CardContent className="p-2 md:p-4">
+                <div className="flex items-center gap-2 md:gap-3">
+                  <Users className="h-6 w-6 md:h-8 md:w-8 text-blue-500 shrink-0" />
+                  <div className="min-w-0">
+                    <p className="font-semibold text-sm md:text-base truncate">Managers</p>
+                    <p className="text-[10px] md:text-xs text-gray-500 truncate">Gestionar managers</p>
                   </div>
                 </div>
               </CardContent>
@@ -655,12 +655,12 @@ export default function AdminDashboard() {
           </Link>
           <Link href="/admin/clients" className="block">
             <Card className="hover:shadow-lg transition-all cursor-pointer border-l-4 border-l-green-500 hover:border-l-green-600">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <Building className="h-8 w-8 text-green-500" />
-                  <div>
-                    <p className="font-semibold">Clientes</p>
-                    <p className="text-xs text-gray-500">Gestionar clientes</p>
+              <CardContent className="p-2 md:p-4">
+                <div className="flex items-center gap-2 md:gap-3">
+                  <Building className="h-6 w-6 md:h-8 md:w-8 text-green-500 shrink-0" />
+                  <div className="min-w-0">
+                    <p className="font-semibold text-sm md:text-base truncate">Clientes</p>
+                    <p className="text-[10px] md:text-xs text-gray-500 truncate">Gestionar clientes</p>
                   </div>
                 </div>
               </CardContent>
@@ -668,12 +668,12 @@ export default function AdminDashboard() {
           </Link>
           <Link href="/admin/work-orders" className="block">
             <Card className="hover:shadow-lg transition-all cursor-pointer border-l-4 border-l-orange-500 hover:border-l-orange-600">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <FileText className="h-8 w-8 text-orange-500" />
-                  <div>
-                    <p className="font-semibold">Órdenes</p>
-                    <p className="text-xs text-gray-500">Gestionar órdenes</p>
+              <CardContent className="p-2 md:p-4">
+                <div className="flex items-center gap-2 md:gap-3">
+                  <FileText className="h-6 w-6 md:h-8 md:w-8 text-orange-500 shrink-0" />
+                  <div className="min-w-0">
+                    <p className="font-semibold text-sm md:text-base truncate">Órdenes</p>
+                    <p className="text-[10px] md:text-xs text-gray-500 truncate">Gestionar órdenes</p>
                   </div>
                 </div>
               </CardContent>
