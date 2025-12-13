@@ -236,8 +236,8 @@ export default function QuotationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+      <div className="max-w-6xl mx-auto space-y-4 md:space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Button variant="ghost" onClick={() => router.push('/admin/dashboard')}>
@@ -245,8 +245,8 @@ export default function QuotationsPage() {
               Volver
             </Button>
             <div>
-              <h1 className="text-2xl font-bold">Gestión de Cotizaciones</h1>
-              <p className="text-sm text-muted-foreground">Administra los presupuestos del sistema</p>
+              <h1 className="text-xl md:text-2xl font-bold">Gestión de Cotizaciones</h1>
+              <p className="text-sm text-muted-foreground hidden sm:block">Administra los presupuestos del sistema</p>
             </div>
           </div>
           
@@ -289,9 +289,10 @@ export default function QuotationsPage() {
               </Button>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-                <Button>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Nueva Cotización
+                <Button size="sm">
+                    <Plus className="h-4 w-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Nueva Cotización</span>
+                    <span className="sm:hidden">Nueva</span>
                 </Button>
             </DialogTrigger>
             <DialogContent>
@@ -351,8 +352,8 @@ export default function QuotationsPage() {
             <CardTitle>Cotizaciones Recientes</CardTitle>
             <CardDescription>Historial de presupuestos emitidos</CardDescription>
           </CardHeader>
-          <CardContent>
-            <Table>
+          <CardContent className="overflow-x-auto">
+            <Table className="min-w-[700px]">
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[50px]">

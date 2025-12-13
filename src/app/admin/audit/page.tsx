@@ -137,23 +137,24 @@ export default function AuditLogsPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
+    <div className="container mx-auto p-4 md:p-6 space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <Link href="/admin/dashboard">
             <Button variant="ghost" size="icon"><ArrowLeft className="h-5 w-5" /></Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              <History className="h-8 w-8" />
-              Registro de Auditoría
+            <h1 className="text-xl md:text-3xl font-bold flex items-center gap-2">
+              <History className="h-6 w-6 md:h-8 md:w-8" />
+              <span className="hidden sm:inline">Registro de Auditoría</span>
+              <span className="sm:hidden">Auditoría</span>
             </h1>
-            <p className="text-gray-500">Historial de actividad del sistema</p>
+            <p className="text-gray-500 text-sm hidden sm:block">Historial de actividad del sistema</p>
           </div>
         </div>
-        <Button onClick={fetchLogs} variant="outline">
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Actualizar
+        <Button onClick={fetchLogs} variant="outline" size="sm">
+          <RefreshCw className="h-4 w-4 mr-1 sm:mr-2" />
+          <span className="hidden sm:inline">Actualizar</span>
         </Button>
       </div>
 
@@ -162,18 +163,18 @@ export default function AuditLogsPage() {
           <CardTitle>Filtros</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
-                placeholder="Buscar por descripción o usuario..."
+                placeholder="Buscar..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
               />
             </div>
             <Select value={actionFilter} onValueChange={setActionFilter}>
-              <SelectTrigger className="w-40">
+              <SelectTrigger className="w-full sm:w-36">
                 <SelectValue placeholder="Acción" />
               </SelectTrigger>
               <SelectContent>
@@ -186,7 +187,7 @@ export default function AuditLogsPage() {
               </SelectContent>
             </Select>
             <Select value={entityFilter} onValueChange={setEntityFilter}>
-              <SelectTrigger className="w-40">
+              <SelectTrigger className="w-full sm:w-36">
                 <SelectValue placeholder="Entidad" />
               </SelectTrigger>
               <SelectContent>

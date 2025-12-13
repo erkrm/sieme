@@ -143,32 +143,33 @@ export default function ReportsPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
+    <div className="container mx-auto p-4 md:p-6 space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <Link href="/admin/dashboard">
             <Button variant="ghost" size="icon"><ArrowLeft className="h-5 w-5" /></Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold">Reportes y Análisis</h1>
-            <p className="text-gray-500">Visualiza métricas y estadísticas del sistema</p>
+            <h1 className="text-2xl md:text-3xl font-bold">Reportes y Análisis</h1>
+            <p className="text-gray-500 text-sm hidden sm:block">Visualiza métricas y estadísticas del sistema</p>
           </div>
         </div>
-        <Button onClick={exportOperationsPDF}>
-          <Download className="h-4 w-4 mr-2" />
-          Exportar PDF
+        <Button size="sm" onClick={exportOperationsPDF}>
+          <Download className="h-4 w-4 mr-1 sm:mr-2" />
+          <span className="hidden sm:inline">Exportar PDF</span>
+          <span className="sm:hidden">PDF</span>
         </Button>
       </div>
 
       <Tabs defaultValue="operations">
-        <TabsList>
-          <TabsTrigger value="operations"><BarChart3 className="h-4 w-4 mr-2" />Operaciones</TabsTrigger>
-          <TabsTrigger value="technicians"><Users className="h-4 w-4 mr-2" />Técnicos</TabsTrigger>
-          <TabsTrigger value="profitability"><DollarSign className="h-4 w-4 mr-2" />Rentabilidad</TabsTrigger>
+        <TabsList className="overflow-x-auto flex-wrap">
+          <TabsTrigger value="operations"><BarChart3 className="h-4 w-4 mr-1 sm:mr-2" /><span className="hidden sm:inline">Operaciones</span><span className="sm:hidden">Ops</span></TabsTrigger>
+          <TabsTrigger value="technicians"><Users className="h-4 w-4 mr-1 sm:mr-2" /><span className="hidden sm:inline">Técnicos</span><span className="sm:hidden">Téc</span></TabsTrigger>
+          <TabsTrigger value="profitability"><DollarSign className="h-4 w-4 mr-1 sm:mr-2" /><span className="hidden sm:inline">Rentabilidad</span><span className="sm:hidden">$</span></TabsTrigger>
         </TabsList>
 
-        <TabsContent value="operations" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <TabsContent value="operations" className="space-y-4 md:space-y-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm text-gray-500">Total Órdenes</CardTitle>
