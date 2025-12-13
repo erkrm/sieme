@@ -90,33 +90,34 @@ export default function ContractsPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="container mx-auto p-4 md:p-6 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Gestión de Contratos</h1>
-          <p className="text-slate-500">Administra los contratos marco y acuerdos de servicio.</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Gestión de Contratos</h1>
+          <p className="text-slate-500 text-sm md:text-base">Administra los contratos marco y acuerdos de servicio.</p>
         </div>
         <Link href="/admin/contracts/new">
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            <Plus className="mr-2 h-4 w-4" />
-            Nuevo Contrato
+          <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+            <Plus className="mr-1 sm:mr-2 h-4 w-4" />
+            <span className="hidden sm:inline">Nuevo Contrato</span>
+            <span className="sm:hidden">Nuevo</span>
           </Button>
         </Link>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Contratos Activos</CardTitle>
-          <CardDescription>Lista de todos los contratos registrados en el sistema.</CardDescription>
+          <CardTitle className="text-lg md:text-xl">Contratos Activos</CardTitle>
+          <CardDescription className="text-sm">Lista de todos los contratos registrados en el sistema.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto">
           {contracts.length === 0 ? (
             <div className="text-center py-10 text-slate-500">
               <FileText className="h-12 w-12 mx-auto mb-4 opacity-20" />
               <p>No hay contratos registrados.</p>
             </div>
           ) : (
-            <Table>
+            <Table className="min-w-[600px]">
               <TableHeader>
                 <TableRow>
                   <TableHead>Cliente</TableHead>
@@ -153,7 +154,7 @@ export default function ContractsPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/admin/contracts/${contract.id}`}>Ver Detalle</Link>
+                        <Link href={`/admin/contracts/${contract.id}`}>Ver</Link>
                       </Button>
                     </TableCell>
                   </TableRow>
