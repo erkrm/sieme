@@ -187,43 +187,43 @@ export default function ClientsPage() {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8">
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-4 md:pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">Total Clientes</p>
-                  <p className="text-2xl font-bold">{clients.length}</p>
+                  <p className="text-xs md:text-sm text-gray-500">Clientes</p>
+                  <p className="text-xl md:text-2xl font-bold">{clients.length}</p>
                 </div>
-                <div className="bg-green-100 p-3 rounded-full">
+                <div className="hidden md:flex bg-green-100 p-3 rounded-full">
                   <Building2 className="h-6 w-6 text-green-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-4 md:pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">Con Contratos</p>
-                  <p className="text-2xl font-bold text-blue-600">
+                  <p className="text-xs md:text-sm text-gray-500">Contratos</p>
+                  <p className="text-xl md:text-2xl font-bold text-blue-600">
                     {clients.filter(c => (c._count?.contracts || 0) > 0).length}
                   </p>
                 </div>
-                <div className="bg-blue-100 p-3 rounded-full">
+                <div className="hidden md:flex bg-blue-100 p-3 rounded-full">
                   <Building2 className="h-6 w-6 text-blue-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-4 md:pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">Sucursales</p>
-                  <p className="text-2xl font-bold text-purple-600">
+                  <p className="text-xs md:text-sm text-gray-500">Sucursales</p>
+                  <p className="text-xl md:text-2xl font-bold text-purple-600">
                     {clients.reduce((acc, c) => acc + c.locations.length, 0)}
                   </p>
                 </div>
-                <div className="bg-purple-100 p-3 rounded-full">
+                <div className="hidden md:flex bg-purple-100 p-3 rounded-full">
                   <MapPin className="h-6 w-6 text-purple-600" />
                 </div>
               </div>

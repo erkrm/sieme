@@ -186,58 +186,58 @@ export default function TechniciansPage() {
         {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-4 md:pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">Total Técnicos</p>
-                  <p className="text-2xl font-bold">{technicians.length}</p>
+                  <p className="text-xs md:text-sm text-gray-500">Total Técnicos</p>
+                  <p className="text-xl md:text-2xl font-bold">{technicians.length}</p>
                 </div>
-                <div className="bg-blue-100 p-3 rounded-full">
+                <div className="hidden md:flex bg-blue-100 p-3 rounded-full">
                   <Users className="h-6 w-6 text-blue-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-4 md:pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">Disponibles</p>
-                  <p className="text-2xl font-bold text-green-600">
+                  <p className="text-xs md:text-sm text-gray-500">Disponibles</p>
+                  <p className="text-xl md:text-2xl font-bold text-green-600">
                     {technicians.filter(t => t.isAvailable && t.user.isActive).length}
                   </p>
                 </div>
-                <div className="bg-green-100 p-3 rounded-full">
+                <div className="hidden md:flex bg-green-100 p-3 rounded-full">
                   <Users className="h-6 w-6 text-green-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-4 md:pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">Ocupados</p>
-                  <p className="text-2xl font-bold text-yellow-600">
+                  <p className="text-xs md:text-sm text-gray-500">Ocupados</p>
+                  <p className="text-xl md:text-2xl font-bold text-yellow-600">
                     {technicians.filter(t => !t.isAvailable).length}
                   </p>
                 </div>
-                <div className="bg-yellow-100 p-3 rounded-full">
+                <div className="hidden md:flex bg-yellow-100 p-3 rounded-full">
                   <Users className="h-6 w-6 text-yellow-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-4 md:pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">Inactivos</p>
-                  <p className="text-2xl font-bold text-red-600">
+                  <p className="text-xs md:text-sm text-gray-500">Inactivos</p>
+                  <p className="text-xl md:text-2xl font-bold text-red-600">
                     {technicians.filter(t => !t.user.isActive).length}
                   </p>
                 </div>
-                <div className="bg-red-100 p-3 rounded-full">
+                <div className="hidden md:flex bg-red-100 p-3 rounded-full">
                   <Users className="h-6 w-6 text-red-600" />
                 </div>
               </div>

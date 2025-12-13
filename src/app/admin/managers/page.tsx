@@ -177,43 +177,43 @@ export default function ManagersPage() {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8">
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-4 md:pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">Total Managers</p>
-                  <p className="text-2xl font-bold">{managers.length}</p>
+                  <p className="text-xs md:text-sm text-gray-500">Managers</p>
+                  <p className="text-xl md:text-2xl font-bold">{managers.length}</p>
                 </div>
-                <div className="bg-purple-100 p-3 rounded-full">
+                <div className="hidden md:flex bg-purple-100 p-3 rounded-full">
                   <UserCog className="h-6 w-6 text-purple-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-4 md:pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">Activos</p>
-                  <p className="text-2xl font-bold text-green-600">
+                  <p className="text-xs md:text-sm text-gray-500">Activos</p>
+                  <p className="text-xl md:text-2xl font-bold text-green-600">
                     {managers.filter(m => m.user.isActive).length}
                   </p>
                 </div>
-                <div className="bg-green-100 p-3 rounded-full">
+                <div className="hidden md:flex bg-green-100 p-3 rounded-full">
                   <UserCog className="h-6 w-6 text-green-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-4 md:pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">Inactivos</p>
-                  <p className="text-2xl font-bold text-red-600">
+                  <p className="text-xs md:text-sm text-gray-500">Inactivos</p>
+                  <p className="text-xl md:text-2xl font-bold text-red-600">
                     {managers.filter(m => !m.user.isActive).length}
                   </p>
                 </div>
-                <div className="bg-red-100 p-3 rounded-full">
+                <div className="hidden md:flex bg-red-100 p-3 rounded-full">
                   <UserCog className="h-6 w-6 text-red-600" />
                 </div>
               </div>
