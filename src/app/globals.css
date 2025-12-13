@@ -121,19 +121,18 @@
   }
 }
 
-/* Mobile Sidebar Safety Net - Forces hidden via media query as fallback */
+/* Ensure main content has correct margin for collapsed/full sidebar */
 @media (max-width: 1023px) {
-  #app-sidebar:not(.block) {
-    display: none !important;
+  main {
+    margin-left: 4rem !important; /* w-16 = 4rem */
   }
 }
 
-/* Ensure main content uses full width on mobile */
-@media (max-width: 1023px) {
+@media (min-width: 1024px) {
   main {
-    margin-left: 0 !important;
-    width: 100% !important;
+    margin-left: 16rem !important; /* w-64 = 16rem */
   }
 }
+
 
 
