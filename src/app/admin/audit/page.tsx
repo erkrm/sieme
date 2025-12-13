@@ -100,13 +100,14 @@ export default function AuditLogsPage() {
   }
 
   const getActionBadge = (action: string) => {
+    const badgeClass = "text-xs max-w-[180px] sm:max-w-none truncate"
     switch (action) {
-      case 'CREATE': return <Badge className="bg-green-100 text-green-800">Crear</Badge>
-      case 'UPDATE': return <Badge className="bg-blue-100 text-blue-800">Actualizar</Badge>
-      case 'DELETE': return <Badge className="bg-red-100 text-red-800">Eliminar</Badge>
-      case 'ASSIGN': return <Badge className="bg-purple-100 text-purple-800">Asignar</Badge>
-      case 'LOGIN': return <Badge className="bg-yellow-100 text-yellow-800">Login</Badge>
-      default: return <Badge variant="outline">{action}</Badge>
+      case 'CREATE': return <Badge className={`bg-green-100 text-green-800 ${badgeClass}`}>Crear</Badge>
+      case 'UPDATE': return <Badge className={`bg-blue-100 text-blue-800 ${badgeClass}`}>Actualizar</Badge>
+      case 'DELETE': return <Badge className={`bg-red-100 text-red-800 ${badgeClass}`}>Eliminar</Badge>
+      case 'ASSIGN': return <Badge className={`bg-purple-100 text-purple-800 ${badgeClass}`}>Asignar</Badge>
+      case 'LOGIN': return <Badge className={`bg-yellow-100 text-yellow-800 ${badgeClass}`}>Login</Badge>
+      default: return <Badge variant="outline" className={badgeClass}>{action.length > 25 ? action.substring(0, 25) + '...' : action}</Badge>
     }
   }
 
@@ -218,19 +219,16 @@ export default function AuditLogsPage() {
                   <div className="hidden sm:flex bg-white p-2 rounded-full shadow shrink-0">
                     {getEntityIcon(log.entityType)}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-1 md:gap-2 mb-1">
-                      {getActionBadge(log.action)}
-                      <Badge variant="outline" className="text-xs">{log.entityType}</Badge>
-                      <span className="text-xs text-gray-500 flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
+                  <div className="flex-1 min-w-0 overflow-hidden">
+                    <div className="mb-1">
+                      <div className="inline-block">{getActionBadge(log.action)}</div>
+                      <Badge variant="outline" className="text-xs ml-1">{log.entityType}</Badge>
+                      <span className="text-xs text-gray-500 ml-2">
                         {format(new Date(log.createdAt), 'dd/MM HH:mm', { locale: es })}
                       </span>
                     </div>
-                    <p className="text-sm md:text-base text-gray-700 break-words">{log.details}</p>
-                    <p className="text-xs md:text-sm text-gray-500 mt-1">
-                      Por: {log.userName}
-                    </p>
+                    <p className="text-sm text-gray-700 line-clamp-2">{log.details}</p>
+                    <p className="text-xs text-gray-500 mt-1">Por: {log.userName}</p>
                   </div>
                 </div>
               ))
