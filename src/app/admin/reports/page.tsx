@@ -171,35 +171,35 @@ export default function ReportsPage() {
         <TabsContent value="operations" className="space-y-4 md:space-y-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-gray-500">Total Órdenes</CardTitle>
+              <CardHeader className="pb-1 md:pb-2 p-3 md:p-6">
+                <CardTitle className="text-xs md:text-sm text-gray-500">Total Órdenes</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-bold">{operationsReport?.totalOrders || 0}</p>
+              <CardContent className="p-3 md:p-6 pt-0">
+                <p className="text-xl md:text-3xl font-bold">{operationsReport?.totalOrders || 0}</p>
               </CardContent>
             </Card>
             <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-gray-500">Completadas</CardTitle>
+              <CardHeader className="pb-1 md:pb-2 p-3 md:p-6">
+                <CardTitle className="text-xs md:text-sm text-gray-500">Completadas</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-bold text-green-600">{operationsReport?.completedOrders || 0}</p>
+              <CardContent className="p-3 md:p-6 pt-0">
+                <p className="text-xl md:text-3xl font-bold text-green-600">{operationsReport?.completedOrders || 0}</p>
               </CardContent>
             </Card>
             <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-gray-500">Pendientes</CardTitle>
+              <CardHeader className="pb-1 md:pb-2 p-3 md:p-6">
+                <CardTitle className="text-xs md:text-sm text-gray-500">Pendientes</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-bold text-yellow-600">{operationsReport?.pendingOrders || 0}</p>
+              <CardContent className="p-3 md:p-6 pt-0">
+                <p className="text-xl md:text-3xl font-bold text-yellow-600">{operationsReport?.pendingOrders || 0}</p>
               </CardContent>
             </Card>
             <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-gray-500">Tiempo Promedio</CardTitle>
+              <CardHeader className="pb-1 md:pb-2 p-3 md:p-6">
+                <CardTitle className="text-xs md:text-sm text-gray-500">Tiempo Prom.</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-bold text-blue-600">{operationsReport?.avgResolutionTime?.toFixed(1) || 0}h</p>
+              <CardContent className="p-3 md:p-6 pt-0">
+                <p className="text-xl md:text-3xl font-bold text-blue-600">{operationsReport?.avgResolutionTime?.toFixed(1) || 0}h</p>
               </CardContent>
             </Card>
           </div>

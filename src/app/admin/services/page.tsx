@@ -318,61 +318,57 @@ export default function ServicesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-6xl mx-auto space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={() => router.push('/admin/dashboard')}>
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Volver
-            </Button>
-            <h1 className="text-2xl font-bold">Catálogo de Servicios</h1>
-          </div>
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+      <div className="max-w-6xl mx-auto space-y-4 md:space-y-6">
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" onClick={() => router.push('/admin/dashboard')}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <h1 className="text-lg md:text-2xl font-bold">Servicios</h1>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-4 rounded-lg border shadow-sm">
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <div className="relative w-full sm:w-64">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Buscar servicios..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8"
-                />
-              </div>
-              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                <SelectTrigger className="w-[180px]">
-                  <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="Categoría" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas</SelectItem>
-                  {flatCategories.map(cat => (
-                    <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+        <div className="flex flex-col gap-3 bg-white p-3 md:p-4 rounded-lg border shadow-sm">
+          <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+            <div className="relative flex-1">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-8"
+              />
             </div>
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger className="w-full sm:w-[150px]">
+                <Filter className="h-4 w-4 mr-1" />
+                <SelectValue placeholder="Categoría" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas</SelectItem>
+                {flatCategories.map(cat => (
+                  <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              {selectedServices.length > 0 && (
-                <Button variant="outline" onClick={handleExportPDF}>
-                  <FileDown className="h-4 w-4 mr-2" />
-                  Exportar ({selectedServices.length})
-                </Button>
-              )}
-              <Button variant="outline" onClick={() => fetchServices(true)} disabled={refreshing}>
-                <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
-                Actualizar
+          <div className="flex flex-wrap items-center gap-2">
+            {selectedServices.length > 0 && (
+              <Button variant="outline" size="sm" onClick={handleExportPDF}>
+                <FileDown className="h-4 w-4" />
+                <span className="hidden sm:inline ml-1">({selectedServices.length})</span>
               </Button>
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button onClick={() => setFormData({ id: '', name: '', description: '', basePrice: '', estimatedHours: '', categoryId: '' })}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Nuevo Servicio
-                  </Button>
-                </DialogTrigger>
+            )}
+            <Button variant="outline" size="sm" onClick={() => fetchServices(true)} disabled={refreshing}>
+              <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+            </Button>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button size="sm" onClick={() => setFormData({ id: '', name: '', description: '', basePrice: '', estimatedHours: '', categoryId: '' })}>
+                  <Plus className="h-4 w-4" />
+                  <span className="hidden sm:inline ml-1">Nuevo</span>
+                </Button>
+              </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>{formData.id ? 'Editar Servicio' : 'Crear Nuevo Servicio'}</DialogTitle>
@@ -449,8 +445,8 @@ export default function ServicesPage() {
               <CardTitle>Servicios Disponibles</CardTitle>
               <CardDescription>Gestiona el catálogo de servicios ofrecidos</CardDescription>
             </CardHeader>
-            <CardContent>
-              <Table>
+            <CardContent className="overflow-x-auto">
+              <Table className="min-w-[600px]">
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-[50px]">

@@ -214,22 +214,22 @@ export default function AuditLogsPage() {
               </div>
             ) : (
               filteredLogs.map((log) => (
-                <div key={log.id} className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <div className="bg-white p-2 rounded-full shadow">
+                <div key={log.id} className="flex items-start gap-2 md:gap-4 p-3 md:p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                  <div className="hidden sm:flex bg-white p-2 rounded-full shadow shrink-0">
                     {getEntityIcon(log.entityType)}
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-1 md:gap-2 mb-1">
                       {getActionBadge(log.action)}
-                      <Badge variant="outline">{log.entityType}</Badge>
-                      <span className="text-sm text-gray-500 flex items-center gap-1">
+                      <Badge variant="outline" className="text-xs">{log.entityType}</Badge>
+                      <span className="text-xs text-gray-500 flex items-center gap-1">
                         <Clock className="h-3 w-3" />
-                        {format(new Date(log.createdAt), 'dd/MM/yyyy HH:mm', { locale: es })}
+                        {format(new Date(log.createdAt), 'dd/MM HH:mm', { locale: es })}
                       </span>
                     </div>
-                    <p className="text-gray-700">{log.details}</p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Por: {log.userName} {log.ipAddress && `• IP: ${log.ipAddress}`}
+                    <p className="text-sm md:text-base text-gray-700 break-words">{log.details}</p>
+                    <p className="text-xs md:text-sm text-gray-500 mt-1">
+                      Por: {log.userName}
                     </p>
                   </div>
                 </div>
