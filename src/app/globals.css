@@ -121,18 +121,44 @@
   }
 }
 
-/* Ensure main content has correct margin for collapsed/full sidebar */
+/* CRITICAL: Sidebar width - Tailwind v4 not generating these classes */
+#app-sidebar {
+  width: 4rem !important; /* 64px = w-16 on mobile */
+}
+
+#app-sidebar .nav-text,
+#app-sidebar .user-name,
+#app-sidebar .user-role-text,
+#app-sidebar .title-text {
+  display: none !important; /* Hide text on mobile */
+}
+
+@media (min-width: 1024px) {
+  #app-sidebar {
+    width: 16rem !important; /* 256px = w-64 on desktop */
+  }
+  
+  #app-sidebar .nav-text,
+  #app-sidebar .user-name,
+  #app-sidebar .user-role-text,
+  #app-sidebar .title-text {
+    display: block !important; /* Show text on desktop */
+  }
+}
+
+/* Main content margin for sidebar */
 @media (max-width: 1023px) {
   main {
-    margin-left: 4rem !important; /* w-16 = 4rem */
+    margin-left: 4rem !important;
   }
 }
 
 @media (min-width: 1024px) {
   main {
-    margin-left: 16rem !important; /* w-64 = 16rem */
+    margin-left: 16rem !important;
   }
 }
+
 
 
 

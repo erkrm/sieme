@@ -94,7 +94,7 @@ export function DashboardLayout({
             <div className={`${colors.bg} p-2 rounded-lg`}>
               <Settings className="h-5 w-5 text-white" />
             </div>
-            <div className="hidden lg:block">
+            <div className="title-text">
               <span className="font-bold">{config.title}</span>
               <p className={`text-xs ${colors.text}`}>{config.role}</p>
             </div>
@@ -115,7 +115,7 @@ export function DashboardLayout({
                   title={item.label}
                 >
                   <item.icon className="h-6 w-6 lg:h-5 lg:w-5 shrink-0" />
-                  <span className="hidden lg:block flex-1 text-sm font-medium">{item.label}</span>
+                  <span className="nav-text flex-1 text-sm font-medium">{item.label}</span>
                   {item.badge && item.badge > 0 && (
                     <Badge className="bg-orange-500 text-xs hidden lg:flex">{item.badge}</Badge>
                   )}
@@ -140,9 +140,9 @@ export function DashboardLayout({
                 {session?.user?.name?.charAt(0) || 'U'}
               </span>
             </div>
-            <div className="hidden lg:block flex-1 min-w-0">
+            <div className="user-name flex-1 min-w-0">
               <p className="font-medium text-sm truncate">{session?.user?.name}</p>
-              <p className="text-xs text-gray-500">{config.role}</p>
+              <p className="text-xs text-gray-500 user-role-text">{config.role}</p>
             </div>
           </div>
           <Button variant="outline" className="w-full hidden lg:flex" size="sm" onClick={handleSignOut}>
