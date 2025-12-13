@@ -158,25 +158,26 @@ export default function ClientsPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
-          <Link href="/admin/dashboard" className="inline-flex items-center text-gray-500 hover:text-gray-700 mb-4">
+        <div className="mb-6 md:mb-8">
+          <Link href="/admin/dashboard" className="inline-flex items-center text-gray-500 hover:text-gray-700 mb-4 text-sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver al Dashboard
           </Link>
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Gestión de Clientes</h1>
-              <p className="text-gray-500 mt-1">Administra los clientes y empresas</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Gestión de Clientes</h1>
+              <p className="text-gray-500 mt-1 text-sm md:text-base">Administra los clientes y empresas</p>
             </div>
-            <div className="flex gap-3">
-              <Button variant="outline" onClick={handleRefresh} disabled={refreshing}>
-                <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
-                Actualizar
+            <div className="flex gap-2 sm:gap-3">
+              <Button variant="outline" size="sm" onClick={handleRefresh} disabled={refreshing}>
+                <RefreshCw className={`h-4 w-4 mr-1 sm:mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+                <span className="hidden sm:inline">Actualizar</span>
               </Button>
               <Link href="/admin/clients/new">
-                <Button className="bg-green-600 hover:bg-green-700">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Nuevo Cliente
+                <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                  <Plus className="h-4 w-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Nuevo Cliente</span>
+                  <span className="sm:hidden">Nuevo</span>
                 </Button>
               </Link>
             </div>
@@ -184,7 +185,7 @@ export default function ClientsPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8">
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
@@ -236,7 +237,7 @@ export default function ClientsPage() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
-                placeholder="Buscar por empresa, contacto, email o RUC..."
+                placeholder="Buscar..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -250,8 +251,8 @@ export default function ClientsPage() {
           <CardHeader>
             <CardTitle>Lista de Clientes ({filteredClients.length})</CardTitle>
           </CardHeader>
-          <CardContent>
-            <Table>
+          <CardContent className="overflow-x-auto">
+            <Table className="min-w-[700px]">
               <TableHeader>
                 <TableRow>
                   <TableHead>Empresa</TableHead>
