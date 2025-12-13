@@ -70,9 +70,20 @@ export function DashboardLayout({
   config: SidebarConfig 
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(true) // Default to mobile
   const pathname = usePathname()
   const { data: session } = useSession()
   const colors = colorConfig[config.color]
+
+  // Detect mobile vs desktop
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Close sidebar on navigation
   useEffect(() => {
@@ -81,12 +92,18 @@ export function DashboardLayout({
 
   const handleSignOut = () => signOut({ callbackUrl: '/auth/signin' })
 
+  // Sidebar styles computed at runtime
+  const sidebarWidth = isMobile ? '4rem' : '16rem'
+  const mainMarginLeft = isMobile ? '4rem' : '16rem'
+  const showText = !isMobile
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Sidebar - Collapsed (icons only) on mobile, full on desktop */}
       <aside 
         id="app-sidebar"
-        className="fixed top-0 left-0 h-full bg-white border-r shadow-lg z-[100] w-16 lg:w-64 transition-all duration-300 ease-in-out"
+        style={{ width: sidebarWidth }}
+        className="fixed top-0 left-0 h-full bg-white border-r shadow-lg z-[100] transition-all duration-300 ease-in-out"
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-center lg:justify-between h-14 lg:h-16 px-2 lg:px-4 border-b">
@@ -94,10 +111,12 @@ export function DashboardLayout({
             <div className={`${colors.bg} p-2 rounded-lg`}>
               <Settings className="h-5 w-5 text-white" />
             </div>
-            <div className="title-text">
-              <span className="font-bold">{config.title}</span>
-              <p className={`text-xs ${colors.text}`}>{config.role}</p>
-            </div>
+            {showText && (
+              <div>
+                <span className="font-bold">{config.title}</span>
+                <p className={`text-xs ${colors.text}`}>{config.role}</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -115,9 +134,9 @@ export function DashboardLayout({
                   title={item.label}
                 >
                   <item.icon className="h-6 w-6 lg:h-5 lg:w-5 shrink-0" />
-                  <span className="nav-text flex-1 text-sm font-medium">{item.label}</span>
-                  {item.badge && item.badge > 0 && (
-                    <Badge className="bg-orange-500 text-xs hidden lg:flex">{item.badge}</Badge>
+                  {showText && <span className="flex-1 text-sm font-medium">{item.label}</span>}
+                  {showText && item.badge && item.badge > 0 && (
+                    <Badge className="bg-orange-500 text-xs">{item.badge}</Badge>
                   )}
                   {/* Mobile badge indicator */}
                   {item.badge && item.badge > 0 && (
@@ -125,7 +144,7 @@ export function DashboardLayout({
                       {item.badge > 9 ? '9+' : item.badge}
                     </span>
                   )}
-                  {isActive && <ChevronRight className="h-4 w-4 shrink-0 hidden lg:block" />}
+                  {showText && isActive && <ChevronRight className="h-4 w-4 shrink-0" />}
                 </div>
               </Link>
             )
@@ -140,23 +159,28 @@ export function DashboardLayout({
                 {session?.user?.name?.charAt(0) || 'U'}
               </span>
             </div>
-            <div className="user-name flex-1 min-w-0">
-              <p className="font-medium text-sm truncate">{session?.user?.name}</p>
-              <p className="text-xs text-gray-500 user-role-text">{config.role}</p>
-            </div>
+            {showText && (
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm truncate">{session?.user?.name}</p>
+                <p className="text-xs text-gray-500">{config.role}</p>
+              </div>
+            )}
           </div>
-          <Button variant="outline" className="w-full hidden lg:flex" size="sm" onClick={handleSignOut}>
-            <LogOut className="h-4 w-4 mr-2" />
-            Cerrar Sesión
-          </Button>
-          <Button variant="ghost" className="w-full lg:hidden p-2" size="icon" onClick={handleSignOut} title="Cerrar Sesión">
-            <LogOut className="h-5 w-5 text-gray-500" />
-          </Button>
+          {showText ? (
+            <Button variant="outline" className="w-full" size="sm" onClick={handleSignOut}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Cerrar Sesión
+            </Button>
+          ) : (
+            <Button variant="ghost" className="w-full p-2" size="icon" onClick={handleSignOut} title="Cerrar Sesión">
+              <LogOut className="h-5 w-5 text-gray-500" />
+            </Button>
+          )}
         </div>
       </aside>
 
       {/* Main Content - margin for collapsed sidebar on mobile, full sidebar on desktop */}
-      <main className="ml-16 lg:ml-64 min-h-screen">
+      <main style={{ marginLeft: mainMarginLeft }} className="min-h-screen">
         {/* Desktop Header - Only visible on desktop */}
         <header className="hidden lg:flex h-16 bg-white border-b items-center justify-between px-6 sticky top-0 z-30">
           <h1 className="font-semibold text-gray-800">
